@@ -13,11 +13,11 @@ function Confirm() {
         alert("Message must be 100 characters or less");
         return false;
     }
-    if(id.length > 12){
+    if(id.length != 12){
         alert("Invalid CCCD ");
         return false;
     }
-
-    alert("Your message has been sent successfully!");
+    alert("ACCESS PERMITTED!");
+    window.location.href = "tracnghiem.html";
 }
 
