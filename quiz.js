@@ -1,6 +1,8 @@
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded", function () {
     const quizContainer = document.getElementById("quiz-container");
+    const submitButton = document.getElementById("submit"); // Lấy nút submit
 
+    // Tạo danh sách câu hỏi
     questions.forEach((q, index) => {
         const questionDiv = document.createElement("div");
         questionDiv.classList.add("question");
@@ -9,6 +11,7 @@ document.addEventListener("DOMContentLoaded", function(){
         const questionTitle = document.createElement("p");
         questionTitle.textContent = `${index + 1}. ${q.text}`;
         questionDiv.appendChild(questionTitle);
+
 
         // Xử lý từng loại câu hỏi
         if (q.type === "true_false") {
@@ -19,25 +22,47 @@ document.addEventListener("DOMContentLoaded", function(){
         } 
         else if (q.type === "multiple_choice") {
             q.options.forEach(option => {
-                questionDiv.innerHTML += `
-                    <label><input type="radio" name="q${q.id}" value="${option}"> ${option}</label>
-                `;
+                const label = document.createElement("label");
+                const input = document.createElement("input");
+                input.type = "radio";
+                input.name = `q${q.id}`;
+                input.value = option;
+                label.appendChild(input);
+                label.appendChild(document.createTextNode(` ${option}`));
+                questionDiv.appendChild(label);
             });
         } 
         else if (q.type === "checkbox") {
             q.options.forEach(option => {
-                questionDiv.innerHTML += `
-                    <label><input type="checkbox" name="q${q.id}" value="${option}"> ${option}</label>
-                `;
+                const label = document.createElement("label");
+                const input = document.createElement("input");
+                input.type = "checkbox";
+                input.name = `q${q.id}`;
+                input.value = option;
+                label.appendChild(input);
+                label.appendChild(document.createTextNode(` ${option}`));
+                questionDiv.appendChild(label);
             });
         } 
         else if (q.type === "text") {
-            questionDiv.innerHTML += `
-                <textarea name="q${q.id}" rows="3" placeholder="Nhập câu trả lời của bạn..."></textarea>
-            `;
+            const textarea = document.createElement("textarea");
+            textarea.name = `q${q.id}`;
+            textarea.rows = 3;
+            textarea.placeholder = "Nhập câu trả lời của bạn...";
+            questionDiv.appendChild(textarea);
         }
 
         // Thêm câu hỏi vào giao diện
         quizContainer.appendChild(questionDiv);
+    });
+
+    // Xử lý sự kiện khi bấm nút submit
+    submitButton.addEventListener("click", function (event) {
+        event.preventDefault(); // Ngăn form reload lại trang
+
+        // Vô hiệu hóa tất cả các ô nhập để giữ nguyên lựa chọn
+        document.querySelectorAll("input, textarea").forEach(input => {
+            input.disabled = true;
+        });
     });
 });
